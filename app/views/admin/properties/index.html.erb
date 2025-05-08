@@ -1,0 +1,56 @@
+<div class="container d-flex justify-content-center">
+  <div class="card p-3 shadow-sm rounded w-100 mx-auto" style="max-width: 900px; background-color: white;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0 ms-2">Propriedades</h4>
+      <div class="dropdown">
+        <button class="btn btn-light border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-three-dots"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+          <li><%= link_to "Nova Propriedade", new_admin_property_path, class: "dropdown-item" %></li>
+        </ul>
+      </div>
+    </div>
+
+    <% if @properties.any? %>
+      <div class="row g-4 justify-content-center">
+        <% @properties.each do |property| %>
+          <div class="col-12 col-lg-4 d-flex justify-content-center">
+            <%= link_to admin_property_path(property), class: "text-decoration-none w-100 d-flex justify-content-center", data: { turbo: false } do %>
+              <div class="card d-flex flex-column align-items-start shadow-sm rounded-3 p-3"
+                   style="width: 250px; height: 250px;">
+                <div class="d-flex align-items-center mb-3">
+                  <i class="bi bi-tree fs-2 text-success me-2"></i>
+                  <span class="fw-bold text-dark text-truncate" style="max-width: 180px; font-size: 1.2rem;"><%= property.name %></span>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-gear fs-5 text-success me-2"></i>
+                    <span class="text-dark">5 Atividades de Produção</span>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-list-task fs-5 text-success me-2"></i>
+                    <span class="text-dark">5 Tarefas Pendentes</span>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-people fs-5 text-success me-2"></i>
+                    <span class="text-dark">5 Colaboradores</span>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-box-seam fs-5 text-success me-2"></i>
+                    <span class="text-dark"> 5 Módulos</span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center text-muted py-4">
+        <p class="fs-5">Nenhuma propriedade cadastrada</p>
+      </div>
+    <% end %>
+
+  </div>
+</div>

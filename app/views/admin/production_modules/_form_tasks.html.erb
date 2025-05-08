@@ -1,0 +1,52 @@
+<%= form_with(model: [:admin, @production_module], class: "row g-3", data: { turbo: false }) do |f| %>
+
+  <%= f.hidden_field :module_type %>
+
+  <div class="col-12">
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <h5>Configuração de Campos</h5>
+  </div>
+
+  <div class="col-12">
+    <div class="row">
+      <div class="col-md-6 col-sm-12 form-check">
+        <%= f.check_box :description, {}, true, false %>
+        <%= f.label :description, "Descrição", class: "form-check-label" %>
+      </div>
+
+      <div class="col-md-6 col-sm-12 form-check">
+        <%= f.check_box :due_date, {}, true, false %>
+        <%= f.label :due_date, "Prazo", class: "form-check-label" %>
+      </div>
+
+      <div class="col-md-6 col-sm-12 form-check">
+        <%= f.check_box :priority, {}, true, false %>
+        <%= f.label :priority, "Prioridade", class: "form-check-label" %>
+      </div>
+
+      <div class="col-md-6 col-sm-12 form-check">
+        <%= f.check_box :uses_supplies, {}, true, false %>
+        <%= f.label :uses_supplies, "Utiliza Insumos?", class: "form-check-label" %>
+      </div>
+
+      <div class="col-md-6 col-sm-12 form-check">
+        <%= f.check_box :expense, {}, true, false %>
+        <%= f.label :expense, "Despesa", class: "form-check-label" %>
+      </div>
+
+      <div class="col-md-6 col-sm-12 form-check">
+        <%= f.check_box :observation, {}, true, false %>
+        <%= f.label :observation, "Observação", class: "form-check-label" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 d-flex justify-content-between mt-4">
+    <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
+    <%= f.submit "Salvar", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

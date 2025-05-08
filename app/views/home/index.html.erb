@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="container text-center">
+    <div class="row d-flex align-items-stretch justify-content-center">
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm h-100">
+          <h2 class="mb-3">Usuário</h2>
+          <%= link_to 'Login Usuário', new_user_session_path, class: 'btn btn-primary w-100 mb-3' %>
+          <p>
+            <%= link_to 'Registrar Usuário', new_user_registration_path, class: 'text-decoration-none' %>
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm h-100">
+          <h2 class="mb-3">Admin</h2>
+          <%= link_to 'Login Admin', new_admin_session_path, class: 'btn btn-primary w-100 mb-3' %>
+          <p>
+            <%= link_to 'Registrar Admin', new_admin_registration_path, class: 'text-decoration-none' %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
