@@ -1,0 +1,105 @@
+<%= form_with(model: [:admin, production_module], class: "row g-3", data: { turbo: false }) do |f| %>
+  <%= f.hidden_field :module_type %>
+
+  <div class="col-12">
+    <%= f.text_field :name, class: "form-control", placeholder: "Ex: Manejo de Gado" %>
+  </div>
+
+  <div class="col-12">
+    <h5>Configuração de Campos</h5>
+    <small class="text-muted">Ative os campos que deseja incluir no módulo.</small>
+    <hr>
+  </div>
+
+  <div class="col-12">
+    <div class="row gy-3">
+
+      <div class="col-md-6 col-sm-12">
+        <div class="form-check form-switch">
+          <%= f.check_box :description, { class: "form-check-input", id: "description" }, true, false %>
+          <%= f.label :description, class: "form-check-label", for: "description" do %>
+            Descrição
+            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Campo para descrição textual da tarefa"></i>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <div class="form-check form-switch">
+          <%= f.check_box :task_type, { class: "form-check-input", id: "task_type" }, true, false %>
+          <%= f.label :task_type, class: "form-check-label", for: "task_type" do %>
+            Tipo da Tarefa
+            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Permite classificar a tarefa (ex: vacinação, venda, pesagem)"></i>
+          <% end %>
+        </div>
+      </div>
+
+
+      <div class="col-md-6 col-sm-12">
+        <div class="form-check form-switch">
+          <%= f.check_box :due_date, { class: "form-check-input", id: "due_date" }, true, false %>
+          <%= f.label :due_date, class: "form-check-label", for: "due_date" do %>
+            Prazo
+            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Define um prazo de entrega"></i>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <div class="form-check form-switch">
+          <%= f.check_box :priority, { class: "form-check-input", id: "priority" }, true, false %>
+          <%= f.label :priority, class: "form-check-label", for: "priority" do %>
+            Prioridade
+            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Permite marcar prioridade"></i>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <div class="form-check form-switch">
+          <%= f.check_box :responsible, { class: "form-check-input", id: "responsible" }, true, false %>
+          <%= f.label :responsible, class: "form-check-label", for: "responsible" do %>
+            Responsável
+            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Quem executou a tarefa (funcionário, veterinário etc.)"></i>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <div class="form-check form-switch">
+          <%= f.check_box :uses_supplies, { class: "form-check-input", id: "uses_supplies" }, true, false %>
+          <%= f.label :uses_supplies, class: "form-check-label", for: "uses_supplies" do %>
+            Utiliza Insumos?
+            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Indica se o processo utiliza insumos"></i>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <div class="form-check form-switch">
+          <%= f.check_box :expense, { class: "form-check-input", id: "expense" }, true, false %>
+          <%= f.label :expense, class: "form-check-label", for: "expense" do %>
+            Despesa
+            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Vincula uma despesa ao item"></i>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <div class="form-check form-switch">
+          <%= f.check_box :observation, { class: "form-check-input", id: "observation" }, true, false %>
+          <%= f.label :observation, class: "form-check-label", for: "observation" do %>
+            Observação
+            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Campo livre para observações adicionais"></i>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-12 d-flex justify-content-between mt-4">
+    <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
+    <%= f.submit "Salvar", class: "btn btn-primary" %>
+  </div>
+<% end %>

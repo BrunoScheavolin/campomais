@@ -1,5 +1,5 @@
 <div class="container d-flex justify-content-center">
-  <div class="card p-4 shadow-sm rounded w-100 mx-auto" style="max-width: 900px; background-color: white;">
+  <div class="card p-3 shadow-sm rounded w-100 mx-auto" style="max-width: 350px; background-color: white;">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2 class="text-success mb-0"><%= @property.name %></h2>
       <div class="dropdown">
@@ -8,8 +8,8 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
           <li><%= link_to "Editar", edit_admin_property_path(@property), class: "dropdown-item" %></li>
-          <li><%= link_to "Novo Acesso", "new_admin_property_access_path(id: @property.id)", class: "dropdown-item" %></li>
-          <li><%= link_to "Novo Módulo", new_admin_module_property_path(id: @property.id), class: "dropdown-item" %></li>
+          <li><%= link_to "Novo Acesso", new_admin_property_access_path(id: @property.id), class: "dropdown-item" %></li>
+          <li><%= link_to "Nova Produção", new_admin_animal_production_path(id: @property.id), data: { turbo: false }, class: "dropdown-item" %></li>
           <li>
             <%= button_to "Excluir", admin_property_path(@property),
                           method: :delete,
@@ -22,6 +22,25 @@
 
     <p><strong>Endereço:</strong> <%= @property.address %></p>
     <p><strong>Tamanho:</strong> <%= @property.size %></p>
+
+
+    <p><strong>Colaboradores</strong></p>
+    <ul class="list-group mb-3 gap-2">
+      <% @property.property_accesses.each do |access| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center border rounded-3">
+          <span><i class="bi bi-person-circle me-2"></i><%= access.user.name %></span>
+        </li>
+      <% end %>
+    </ul>
+
+    <p><strong>Produções</strong></p>
+    <ul class="list-group mb-3 gap-2">
+      <% @property.animal_productions.each do |production| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center border rounded-3">
+          <%= link_to production.name, admin_animal_production_path(production), data: { turbo: false }, class: "text-decoration-none" %>
+        </li>
+      <% end %>
+    </ul>
 
     <div class="d-flex justify-content-start mt-4">
       <%= link_to "Voltar", admin_properties_path, class: "btn btn-secondary", data: { turbo: false } %>
