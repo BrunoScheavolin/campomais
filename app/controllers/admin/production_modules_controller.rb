@@ -51,18 +51,22 @@ class Admin::ProductionModulesController < ApplicationController
   def production_module_params
     params.require(:production_module).permit(
       :name, :active, :property_id, :module_type,
-      :description, :due_date, :priority, :expense
+      :description, :due_date, :priority, :uses_supplies, :expense, :observation, :task_type, :responsible
     ).tap do |whitelisted|
       whitelisted[:settings] = {
         description: whitelisted.delete(:description),
         due_date: whitelisted.delete(:due_date),
         priority: whitelisted.delete(:priority),
-        expense: whitelisted.delete(:expense)
+        uses_supplies: whitelisted.delete(:uses_supplies),
+        expense: whitelisted.delete(:expense),
+        task_type: whitelisted.delete(:task_type),
+        responsible: whitelisted.delete(:responsible),
+        observation: whitelisted.delete(:observation)
       }
     end
   end
 
   def build_settings_json(fields)
-    fields.permit(:description, :due_date, :priority, :expense).to_h
+    fields.permit(:description, :due_date, :priority, :expense, :uses_supplies, :observation, :task_type, :responsible).to_h
   end
 end

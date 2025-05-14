@@ -1,0 +1,15 @@
+<%= form_with model: property_access, url: admin_property_accesses_path, method: :post, data: { turbo: false }, class: "row g-3" do |f| %>
+  <%= f.hidden_field :property_id, value: @property.id %>
+
+  <div class="col-12">
+    <div>
+      <%= f.label :email, "E-mail do colaborador" %>
+      <%= f.text_field :email, class: "form-control", placeholder: "Digite o e-mail do colaborador" %>
+    </div>
+  </div>
+
+  <div class="col-12 d-flex justify-content-between mt-4">
+    <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
+    <%= f.submit "Salvar", class: "btn btn-primary" %>
+  </div>
+<% end %>
