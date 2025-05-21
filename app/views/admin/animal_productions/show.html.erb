@@ -79,7 +79,6 @@
       </div>
     </div>
 
-    <!-- Card de Tarefas -->
     <div class="col-md-4 mb-4">
       <div class="card p-3 shadow-sm rounded w-100" style="background-color: white;">
         <h4 class="text-success">Tarefas</h4>
@@ -98,6 +97,9 @@
                 <td><%= task.task_type %></td>
                 <td><%= task.responsible %></td>
                 <td><%= task.due_date&.strftime("%d/%m/%Y") %></td>
+                <td>
+                  <%= link_to "Ver", task_path(task), class: "btn btn-sm btn-primary" %>
+                </td>
               </tr>
             <% end %>
             </tbody>
@@ -107,5 +109,6 @@
         <% end %>
       </div>
     </div>
+
   </div>
 </div>

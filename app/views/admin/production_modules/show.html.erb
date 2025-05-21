@@ -1,0 +1,97 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6 mb-4">
+      <div class="card p-3 shadow-sm rounded w-100" style="background-color: white;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="text-success mb-0"><%= @production_module.name %></h2>
+          <div class="dropdown">
+            <button class="btn btn-light border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+              <li><%= link_to "Editar", edit_admin_production_module_path(@production_module), class: "dropdown-item" %></li>
+              <li>
+                <%= button_to "Excluir", admin_production_module_path(@production_module),
+                              method: :delete,
+                              data: { turbo: false, confirm: "Tem certeza que deseja excluir este módulo?" },
+                              class: "dropdown-item text-danger" %>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <% settings = @production_module.settings || {} %>
+        <% production_settings = @production_module.production_settings || {} %>
+
+        <p><strong>Tipo do Módulo:</strong> <%= @production_module.module_type %></p>
+        <p><strong>Ativo:</strong> <%= @production_module.active? ? 'Sim' : 'Não' %></p>
+        <hr>
+
+        <h5 class="text-success">Configurações de Tarefa</h5>
+
+        <% if settings["description"] %>
+          <p><strong>Descrição</strong></p>
+        <% end %>
+
+        <% if settings["due_date"] %>
+          <p><strong>Prazo</strong></p>
+        <% end %>
+
+        <% if settings["priority"] %>
+          <p><strong>Prioridade</strong></p>
+        <% end %>
+
+        <% if settings["responsible"] %>
+          <p><strong>Responsável</strong></p>
+        <% end %>
+
+        <% if settings["uses_supplies"] %>
+          <p><strong>Usa Insumos</strong></p>
+        <% end %>
+
+        <% if settings["image"] %>
+          <p><strong>Imagem</strong></p>
+        <% end %>
+
+        <% if settings["observation"] %>
+          <p><strong>Observação</strong></p>
+        <% end %>
+
+        <hr>
+        <h5 class="text-success">Configurações de Produção</h5>
+
+        <% if production_settings["breed"] %>
+          <p><strong>Raça</strong></p>
+        <% end %>
+
+        <% if production_settings["animal_quantity"] %>
+          <p><strong>Quantidade de Animais</strong></p>
+        <% end %>
+
+        <% if production_settings["average_weight"] %>
+          <p><strong>Peso Médio</strong></p>
+        <% end %>
+
+        <% if production_settings["eggs_produced"] %>
+          <p><strong>Ovos Produzidos</strong></p>
+        <% end %>
+
+        <% if production_settings["milk_production"] %>
+          <p><strong>Produção de Leite</strong></p>
+        <% end %>
+
+        <% if production_settings["used_area"] %>
+          <p><strong>Área Utilizada</strong></p>
+        <% end %>
+
+        <% if production_settings["notes"] %>
+          <p><strong>Notas</strong></p>
+        <% end %>
+
+        <div class="d-flex justify-content-start mt-4">
+          <%= link_to "Voltar", admin_production_modules_path, class: "btn btn-secondary", data: { turbo: false } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

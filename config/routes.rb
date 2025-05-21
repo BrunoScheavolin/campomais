@@ -20,11 +20,11 @@ Rails.application.routes.draw do
     get "/", to: "home#index", as: "home"
     resources :properties, expect: %i[create index update destroy new edit show]
     resources :animal_productions, expect: %i[create index update destroy new edit show]
-    resources :production_modules, only: [:new, :create, :destroy, :index, :show]
+    resources :production_modules, only: [:new, :create, :edit, :update, :destroy, :index, :show]
     resources :property_accesses, only: [:new, :create, :destroy]
   end
 
-  resources :tasks, only: [:new, :create, :destroy]
+  resources :tasks, only: [:new, :create, :show, :destroy]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

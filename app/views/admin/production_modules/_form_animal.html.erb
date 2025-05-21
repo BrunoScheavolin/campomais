@@ -1,10 +1,30 @@
+<% production_fields = {
+  breed: ["Raça", "Raça do animal (Ex: Nelore, Leghorn)"],
+  animal_quantity: ["Quantidade de Animais", "Número de animais envolvidos na produção"],
+  average_weight: ["Peso Médio", "Peso médio dos animais (Ex: 350kg)"],
+  eggs_produced: ["Ovos Produzidos", "Quantidade de ovos produzidos por período"],
+  milk_production: ["Produção de Leite (L)", "Volume médio de leite produzido"],
+  used_area: ["Área Utilizada (Alq)", "Área em hectares utilizada na produção"],
+  notes: ["Anotações", "Campo para observações e anotações gerais"]
+} %>
+
+<% task_fields = {
+  description: ["Descrição", "Campo para descrição textual da tarefa"],
+  task_type: ["Tipo da Tarefa", "Permite classificar a tarefa (ex: vacinação, venda, pesagem)"],
+  due_date: ["Prazo", "Define um prazo de entrega"],
+  priority: ["Prioridade", "Permite marcar prioridade"],
+  responsible: ["Responsável", "Quem executou a tarefa (funcionário, veterinário etc.)"],
+  uses_supplies: ["Utiliza Insumos?", "Indica se o processo utiliza insumos"],
+  image: ["Imagem", "Permite fazer o upload de imagens"],
+  observation: ["Observação", "Campo livre para observações adicionais"]
+} %>
+
 <%= form_with(model: [:admin, production_module], class: "row g-3", data: { turbo: false }) do |f| %>
   <%= f.hidden_field :module_type %>
 
   <div class="col-12">
     <%= f.text_field :name, class: "form-control", placeholder: "Ex: Manejo de Gado" %>
   </div>
-
 
   <div class="col-12">
     <h5>Configuração Produção</h5>
@@ -14,82 +34,25 @@
 
   <div class="col-12">
     <div class="row gy-3">
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :breed, { class: "form-check-input", id: "breed" }, true, false %>
-          <%= f.label :breed, class: "form-check-label", for: "breed" do %>
-            Raça
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Raça do animal (Ex: Nelore, Leghorn)"></i>
-          <% end %>
+      <% production_fields.each do |field, (label, tooltip)| %>
+        <div class="col-md-6 col-sm-12">
+          <div class="form-check form-switch">
+            <%= f.check_box field, {
+              class: "form-check-input",
+              id: field,
+              checked: @production_module.production_settings[field.to_s].present?
+            }, true, false %>
+            <%= f.label field, class: "form-check-label", for: field do %>
+              <%= label %>
+              <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="<%= tooltip %>"></i>
+            <% end %>
+          </div>
         </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :animal_quantity, { class: "form-check-input", id: "animal_quantity" }, true, false %>
-          <%= f.label :animal_quantity, class: "form-check-label", for: "animal_quantity" do %>
-            Quantidade de Animais
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Número de animais envolvidos na produção"></i>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :average_weight, { class: "form-check-input", id: "average_weight" }, true, false %>
-          <%= f.label :average_weight, class: "form-check-label", for: "average_weight" do %>
-            Peso Médio
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Peso médio dos animais (Ex: 350kg)"></i>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :eggs_produced, { class: "form-check-input", id: "eggs_produced" }, true, false %>
-          <%= f.label :eggs_produced, class: "form-check-label", for: "eggs_produced" do %>
-            Ovos Produzidos
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Quantidade de ovos produzidos por período"></i>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :milk_production, { class: "form-check-input", id: "milk_production" }, true, false %>
-          <%= f.label :milk_production, class: "form-check-label", for: "milk_production" do %>
-            Produção de Leite (L)
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Volume médio de leite produzido"></i>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :used_area, { class: "form-check-input", id: "used_area" }, true, false %>
-          <%= f.label :used_area, class: "form-check-label", for: "used_area" do %>
-            Área Utilizada (Alq)
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Área em hectares utilizada na produção"></i>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="col-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :notes, { class: "form-check-input", id: "notes" }, true, false %>
-          <%= f.label :notes, class: "form-check-label", for: "notes" do %>
-            Anotações
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Campo para observações e anotações gerais"></i>
-          <% end %>
-        </div>
-      </div>
-
+      <% end %>
     </div>
   </div>
 
-
-  <div class="col-12">
+  <div class="col-12 mt-4">
     <h5>Configuração Tarefas</h5>
     <small class="text-muted">Ative os campos que deseja incluir para as tarefas.</small>
     <hr>
@@ -97,78 +60,21 @@
 
   <div class="col-12">
     <div class="row gy-3">
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :description, { class: "form-check-input", id: "description" }, true, false %>
-          <%= f.label :description, class: "form-check-label", for: "description" do %>
-            Descrição
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Campo para descrição textual da tarefa"></i>
-          <% end %>
+      <% task_fields.each do |field, (label, tooltip)| %>
+        <div class="col-md-6 col-sm-12">
+          <div class="form-check form-switch">
+            <%= f.check_box field, {
+              class: "form-check-input",
+              id: field,
+              checked: @production_module.settings[field.to_s].present?
+            }, true, false %>
+            <%= f.label field, class: "form-check-label", for: field do %>
+              <%= label %>
+              <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="<%= tooltip %>"></i>
+            <% end %>
+          </div>
         </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :task_type, { class: "form-check-input", id: "task_type" }, true, false %>
-          <%= f.label :task_type, class: "form-check-label", for: "task_type" do %>
-            Tipo da Tarefa
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Permite classificar a tarefa (ex: vacinação, venda, pesagem)"></i>
-          <% end %>
-        </div>
-      </div>
-
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :due_date, { class: "form-check-input", id: "due_date" }, true, false %>
-          <%= f.label :due_date, class: "form-check-label", for: "due_date" do %>
-            Prazo
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Define um prazo de entrega"></i>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :priority, { class: "form-check-input", id: "priority" }, true, false %>
-          <%= f.label :priority, class: "form-check-label", for: "priority" do %>
-            Prioridade
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Permite marcar prioridade"></i>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :responsible, { class: "form-check-input", id: "responsible" }, true, false %>
-          <%= f.label :responsible, class: "form-check-label", for: "responsible" do %>
-            Responsável
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Quem executou a tarefa (funcionário, veterinário etc.)"></i>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :uses_supplies, { class: "form-check-input", id: "uses_supplies" }, true, false %>
-          <%= f.label :uses_supplies, class: "form-check-label", for: "uses_supplies" do %>
-            Utiliza Insumos?
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Indica se o processo utiliza insumos"></i>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-sm-12">
-        <div class="form-check form-switch">
-          <%= f.check_box :observation, { class: "form-check-input", id: "observation" }, true, false %>
-          <%= f.label :observation, class: "form-check-label", for: "observation" do %>
-            Observação
-            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Campo livre para observações adicionais"></i>
-          <% end %>
-        </div>
-      </div>
-
+      <% end %>
     </div>
   </div>
 
