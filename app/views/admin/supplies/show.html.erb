@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @admin_supply %>
+
+<div>
+  <%= link_to "Edit this supply", edit_admin_supply_path(@admin_supply) %> |
+  <%= link_to "Back to supplies", admin_supplies_path %>
+
+  <%= button_to "Destroy this supply", @admin_supply, method: :delete %>
+</div>

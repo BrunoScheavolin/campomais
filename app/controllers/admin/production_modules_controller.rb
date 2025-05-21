@@ -1,5 +1,5 @@
 class Admin::ProductionModulesController < ApplicationController
-  before_action :set_module, only: %i[show edit update destroy]
+  before_action :set_production_module, only: %i[show edit update destroy]
 
   def index
     @production_modules = ProductionModule.all
@@ -9,16 +9,17 @@ class Admin::ProductionModulesController < ApplicationController
   end
 
   def new
-    @production_module = ProductionModule.new
-    @production_module.module_type = params[:type]
+    @production_module = ProductionModule.new(module_type: params[:type])
   end
 
   def create
     @production_module = ProductionModule.new(production_module_params)
     @production_module.admin_id = current_admin.id
     @production_module.active = true
+
     if @production_module.save
-      redirect_to admin_production_modules_path, notice: "Module was successfully created."
+      flash[:success] = "Módulo criado!"
+      redirect_to admin_production_modules_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -28,10 +29,11 @@ class Admin::ProductionModulesController < ApplicationController
   end
 
   def update
-    @production_module.settings = build_settings_json(params[:settings]) if params[:settings]
+    @production_module.settings = extract_settings(params[:settings]) if params[:settings]
+    @production_module.production_settings = extract_production_settings(params[:production_settings]) if params[:production_settings]
 
     if @production_module.update(production_module_params)
-      redirect_to new_admin_production_module_path(@production_module), notice: "Module was successfully updated."
+      redirect_to new_admin_production_module_path(@production_module), notice: "Módulo atualizado com sucesso."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -39,34 +41,53 @@ class Admin::ProductionModulesController < ApplicationController
 
   def destroy
     @production_module.destroy
-    redirect_to new_admin_production_module_path, notice: "Module was successfully deleted."
+    redirect_to new_admin_production_module_path, notice: "Módulo excluído com sucesso."
   end
 
   private
 
-  def set_module
+  def set_production_module
     @production_module = ProductionModule.find(params[:id])
   end
 
   def production_module_params
-    params.require(:production_module).permit(
-      :name, :active, :property_id, :module_type,
-      :description, :due_date, :priority, :uses_supplies, :expense, :observation, :task_type, :responsible
-    ).tap do |whitelisted|
-      whitelisted[:settings] = {
-        description: whitelisted.delete(:description),
-        due_date: whitelisted.delete(:due_date),
-        priority: whitelisted.delete(:priority),
-        uses_supplies: whitelisted.delete(:uses_supplies),
-        expense: whitelisted.delete(:expense),
-        task_type: whitelisted.delete(:task_type),
-        responsible: whitelisted.delete(:responsible),
-        observation: whitelisted.delete(:observation)
-      }
-    end
+    base = params.require(:production_module).permit(
+      :name, :active, :module_type,
+      :description, :due_date, :priority, :uses_supplies, :observation,
+      :task_type, :responsible,
+      :breed, :animal_quantity, :average_weight, :eggs_produced,
+      :milk_production, :used_area, :notes
+    )
+
+    base[:settings] = extract_settings(base.slice(
+      :description, :due_date, :priority, :uses_supplies,
+      :task_type, :responsible, :observation
+    ))
+
+    base[:production_settings] = extract_production_settings(base.slice(
+      :breed, :animal_quantity, :average_weight, :eggs_produced,
+      :milk_production, :used_area, :notes
+    ))
+
+    base.except(
+      :description, :due_date, :priority, :uses_supplies,
+      :task_type, :responsible, :observation,
+      :breed, :animal_quantity, :average_weight, :eggs_produced,
+      :milk_production, :used_area, :notes
+    )
   end
 
-  def build_settings_json(fields)
-    fields.permit(:description, :due_date, :priority, :expense, :uses_supplies, :observation, :task_type, :responsible).to_h
+  def extract_settings(fields)
+    fields.to_h.slice(
+      "description", "due_date", "priority", "uses_supplies",
+      "observation", "task_type", "responsible"
+    )
+  end
+
+  def extract_production_settings(fields)
+    fields.to_h.slice(
+      "breed", "animal_quantity", "average_weight", "eggs_produced",
+      "milk_production", "used_area", "notes"
+    )
   end
 end

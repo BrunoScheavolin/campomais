@@ -1,44 +1,111 @@
-<div class="container d-flex justify-content-center">
-  <div class="card p-3 shadow-sm rounded w-100 mx-auto" style="max-width: 450px; background-color: white;">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="text-success mb-0"><%= @animal_production.name %></h2>
-      <div class="dropdown">
-        <button class="btn btn-light border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-three-dots"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-          <li><%= link_to "Editar", edit_admin_animal_production_path(@animal_production), class: "dropdown-item" %></li>
-          <li>
-            <%= button_to "Excluir", admin_animal_production_path(@animal_production),
-                          method: :delete,
-                          data: { turbo: false, confirm: "Tem certeza que deseja excluir esta produção?" },
-                          class: "dropdown-item text-danger" %>
-          </li>
-        </ul>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-4 mb-4">
+      <div class="card p-3 shadow-sm rounded w-100" style="background-color: white;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="text-success mb-0"><%= @animal_production.name %></h2>
+          <div class="dropdown">
+            <button class="btn btn-light border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+              <li><%= link_to "Nova Tarefa", new_task_path(id: @animal_production.id), class: "dropdown-item" %></li>
+              <li><%= link_to "Novo Insumo", new_admin_supply_path(id: @animal_production.id), class: "dropdown-item" %></li>
+              <li><%= link_to "Editar", edit_admin_animal_production_path(@animal_production), class: "dropdown-item" %></li>
+              <li>
+                <%= button_to "Excluir", admin_animal_production_path(@animal_production),
+                              method: :delete,
+                              data: { turbo: false, confirm: "Tem certeza que deseja excluir esta produção?" },
+                              class: "dropdown-item text-danger" %>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <% production_settings = @animal_production.production_module&.production_settings || {} %>
+
+        <p><strong>Início:</strong> <%= @animal_production.start_date&.strftime("%d/%m/%Y") %></p>
+        <p><strong>Fim:</strong> <%= @animal_production.end_date&.strftime("%d/%m/%Y") %></p>
+
+        <% if production_settings["breed"] %>
+          <p><strong>Raça:</strong> <%= @animal_production.breed %></p>
+        <% end %>
+
+        <% if production_settings["animal_quantity"] %>
+          <p><strong>Quantidade Inicial:</strong> <%= @animal_production.animal_quantity %></p>
+        <% end %>
+
+        <% if production_settings["average_weight"] %>
+          <p><strong>Peso Médio:</strong> <%= @animal_production.average_weight %></p>
+        <% end %>
+
+        <% if production_settings["eggs_produced"] %>
+          <p><strong>Ovos Produzidos:</strong> <%= @animal_production.eggs_produced %></p>
+        <% end %>
+
+        <% if production_settings["milk_production"] %>
+          <p><strong>Produção de Leite:</strong> <%= @animal_production.milk_production %> litros</p>
+        <% end %>
+
+        <% if production_settings["used_area"] %>
+          <p><strong>Área Utilizada:</strong> <%= @animal_production.used_area %> Alq</p>
+        <% end %>
+
+        <p><strong>Módulo Animal:</strong> <%= @animal_production.production_module&.name %></p>
+        <p><strong>Propriedade:</strong> <%= @animal_production.property&.name %></p>
+
+        <% if @animal_production.notes.present? %>
+          <hr>
+          <p><strong>Observações:</strong></p>
+          <p><%= @animal_production.notes %></p>
+        <% end %>
+
+        <div class="d-flex justify-content-start mt-4">
+          <%= link_to "Voltar", admin_property_path(@animal_production.property), class: "btn btn-secondary", data: { turbo: false } %>
+        </div>
       </div>
     </div>
 
-    <p><strong>Início:</strong> <%= @animal_production.start_date&.strftime("%d/%m/%Y") %></p>
-    <p><strong>Fim:</strong> <%= @animal_production.end_date&.strftime("%d/%m/%Y") %></p>
-    <p><strong>Quantidade Inicial:</strong> <%= @animal_production.animal_quantity %></p>
-    <p><strong>Peso Médio:</strong> <%= @animal_production.average_weight %></p>
+    <div class="col-md-4 mb-4">
+      <div class="card p-3 shadow-sm rounded w-100" style="background-color: white;">
+        <h4 class="text-success">Financeiro</h4>
+        <p><strong>Receita:</strong>
+          R$ <%= number_to_currency(@animal_production.revenue, unit: "", separator: ",", delimiter: ".") %></p>
+        <p><strong>Despesas:</strong>
+          R$ <%= number_to_currency(@animal_production.expenses, unit: "", separator: ",", delimiter: ".") %></p>
+        <hr>
+        <p><strong>Lucro:</strong>
+          R$ <%= number_to_currency(@animal_production.revenue.to_f - @animal_production.expenses.to_f, unit: "", separator: ",", delimiter: ".") %></p>
+      </div>
+    </div>
 
-    <p><strong>Receita:</strong> R$ <%= number_to_currency(@animal_production.revenue, unit: "", separator: ",", delimiter: ".") %></p>
-    <p><strong>Despesas:</strong> R$ <%= number_to_currency(@animal_production.expenses, unit: "", separator: ",", delimiter: ".") %></p>
-
-    <hr>
-
-    <p><strong>Módulo de Produção:</strong> <%= @animal_production.production_module&.name %></p>
-    <p><strong>Propriedade:</strong> <%= @animal_production.property&.name %></p>
-
-    <% if @animal_production.notes.present? %>
-      <hr>
-      <p><strong>Observações:</strong></p>
-      <p><%= @animal_production.notes %></p>
-    <% end %>
-
-    <div class="d-flex justify-content-start mt-4">
-      <%= link_to "Voltar", admin_property_path(@animal_production.property), class: "btn btn-secondary", data: { turbo: false } %>
+    <!-- Card de Tarefas -->
+    <div class="col-md-4 mb-4">
+      <div class="card p-3 shadow-sm rounded w-100" style="background-color: white;">
+        <h4 class="text-success">Tarefas</h4>
+        <% if @animal_production.tasks.any? %>
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th scope="col">Tipo</th>
+              <th scope="col">Responsável</th>
+              <th scope="col">Prazo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @animal_production.tasks.each do |task| %>
+              <tr>
+                <td><%= task.task_type %></td>
+                <td><%= task.responsible %></td>
+                <td><%= task.due_date&.strftime("%d/%m/%Y") %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p>Não há tarefas relacionadas a esta produção.</p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

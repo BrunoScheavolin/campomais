@@ -1,0 +1,24 @@
+<nav class="navbar fixed-bottom navbar-light bg-light border-top">
+  <div class="container justify-content-around text-center">
+    <%= link_to admin_properties_path, class: "text-decoration-none text-dark", data: { turbo: false } do %>
+      <div class="d-flex flex-column align-items-center" style="font-size: 0.75rem;">
+        <i class="bi bi-tree fs-5 text-success"></i>
+        <small>Propriedades</small>
+      </div>
+    <% end %>
+
+    <%= link_to admin_production_modules_path, class: "text-decoration-none text-dark", data: { turbo: false } do %>
+      <div class="d-flex flex-column align-items-center" style="font-size: 0.75rem;">
+        <i class="bi bi-box fs-5 text-success"></i>
+        <small>Módulos</small>
+      </div>
+    <% end %>
+
+    <%= link_to "#", class: "text-decoration-none text-dark", data: { turbo: false } do %>
+      <div class="d-flex flex-column align-items-center" style="font-size: 0.75rem;">
+        <i class="bi bi-bar-chart fs-5 text-success"></i>
+        <small>Estatísticas</small>
+      </div>
+    <% end %>
+  </div>
+</nav>

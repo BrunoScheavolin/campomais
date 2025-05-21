@@ -1,0 +1,23 @@
+<%= form_with(model: supply, url: admin_supplies_path, class: "row g-3", data: { turbo: false }) do |form| %>
+  <%= form.hidden_field :animal_production_id %>
+
+  <div class="col-12">
+    <small class="text-muted">Descrição</small>
+    <%= form.text_field :name, class: "form-control", placeholder: "Ex: Ração, Vacina, etc.", required: true %>
+  </div>
+
+  <div class="col-12">
+    <small class="text-muted">Quantidade</small>
+    <%= form.number_field :quantity, class: "form-control", min: 0, required: true %>
+  </div>
+
+  <div class="col-12">
+    <small class="text-muted">Valor (Unitário)</small>
+    <%= form.text_field :expense, class: "form-control", required: true %>
+  </div>
+
+  <div class="col-12 d-flex justify-content-between mt-4">
+    <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
+    <%= form.submit "Salvar", class: "btn btn-primary" %>
+  </div>
+<% end %>

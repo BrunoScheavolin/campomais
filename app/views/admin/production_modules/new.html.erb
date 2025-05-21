@@ -3,7 +3,7 @@
 
   <% if @production_module.module_type.present? %>
     <div class="card p-3 rounded w-100 mx-auto" style="max-width: 350px; background-color: white;">
-      <h4>Novo Módulo <%= @production_module.module_type %></h4>
+      <h5>Novo Módulo <%= @production_module.module_type %></h5>
       <%= render "form_#{@production_module.module_type}", production_module: @production_module %>
     </div>
   <% else %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_13_214213) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_14_191448) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,9 +32,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_214213) do
     t.string "name"
     t.date "start_date"
     t.date "end_date"
+    t.string "breed"
+    t.string "purpose"
     t.integer "animal_quantity"
     t.string "average_weight"
+    t.integer "eggs_produced"
+    t.decimal "milk_production", precision: 10, scale: 2
     t.text "notes"
+    t.decimal "used_area", precision: 10, scale: 2
     t.decimal "revenue", precision: 14, scale: 2, default: "0.0"
     t.decimal "expenses", precision: 14, scale: 2, default: "0.0"
     t.bigint "production_module_id", null: false
@@ -52,6 +57,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_214213) do
     t.boolean "active"
     t.json "settings"
     t.integer "module_type"
+    t.json "production_settings"
     t.bigint "admin_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -77,6 +83,33 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_214213) do
     t.index ["user_id"], name: "index_property_accesses_on_user_id"
   end
 
+  create_table "supplies", force: :cascade do |t|
+    t.string "name"
+    t.integer "quantity"
+    t.decimal "expense"
+    t.bigint "animal_production_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["animal_production_id"], name: "index_supplies_on_animal_production_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.text "description"
+    t.date "due_date"
+    t.boolean "priority"
+    t.boolean "uses_supplies"
+    t.decimal "expense"
+    t.text "observation"
+    t.string "task_type"
+    t.string "responsible"
+    t.integer "supply_id"
+    t.integer "supply_quantity"
+    t.bigint "animal_production_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["animal_production_id"], name: "index_tasks_on_animal_production_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "name", default: "", null: false
@@ -98,4 +131,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_214213) do
   add_foreign_key "properties", "admins"
   add_foreign_key "property_accesses", "properties"
   add_foreign_key "property_accesses", "users"
+  add_foreign_key "supplies", "animal_productions"
+  add_foreign_key "tasks", "animal_productions"
 end

@@ -1,0 +1,19 @@
+<%= form_with(model: [:admin, @animal_production], class: "row g-3", data: { turbo: false }) do |f| %>
+
+  <%= f.hidden_field :property_id, value: @animal_production.property_id %>
+
+  <div class="col-12">
+    <%= f.text_field :name, class: "form-control", placeholder: "Ex: Produção de Gado 2025" %>
+  </div>
+
+  <div class="col-12">
+    <%= f.label :production_module_id, "Módulo de Produção", class: "form-label" %>
+    <%= f.collection_select :production_module_id, @production_modules, :id, :name, { prompt: "Selecione um módulo de produção" }, class: "form-control" %>
+  </div>
+
+  <div class="col-12 d-flex justify-content-between mt-4">
+    <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
+    <%= f.submit "Salvar", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

@@ -15,29 +15,33 @@
           <%= link_to admin_property_path(property), class: "text-decoration-none", data: { turbo: false } do %>
             <div class="card d-flex flex-column justify-content-between align-items-start shadow-sm rounded-3 p-3">
               <div class="d-flex align-items-center mb-3">
-                <i class="bi bi-tree fs-2 text-success me-2" style="min-width: 24px;"></i>
+                <i class="fas fa-house fs-5 text-success me-2" style="min-width: 24px;"></i>
+
                 <span class="fw-bold text-dark text-truncate" style="font-size: 1.2rem;"><%= property.name %></span>
               </div>
               <div class="d-flex flex-column gap-2">
                 <div class="d-flex align-items-center">
-                  <i class="bi bi-gear fs-5 text-success me-2" style="min-width: 24px;"></i>
-                  <span class="text-dark">5 Atividades de Produção</span>
+                  <i class="fas fa-tractor fs-5 text-success me-2" style="min-width: 24px;"></i>
+                  <span class="text-dark">
+          <%= property.animal_productions.count %> Atividades de Produção
+        </span>
                 </div>
                 <div class="d-flex align-items-center">
                   <i class="bi bi-list-task fs-5 text-success me-2" style="min-width: 24px;"></i>
-                  <span class="text-dark">5 Tarefas Pendentes</span>
+                  <span class="text-dark">
+          <%= property.animal_productions.flat_map(&:tasks).count %> Tarefas
+        </span>
                 </div>
                 <div class="d-flex align-items-center">
                   <i class="bi bi-people fs-5 text-success me-2" style="min-width: 24px;"></i>
-                  <span class="text-dark">5 Colaboradores</span>
-                </div>
-                <div class="d-flex align-items-center">
-                  <i class="bi bi-box-seam fs-5 text-success me-2" style="min-width: 24px;"></i>
-                  <span class="text-dark"> 5 Módulos</span>
+                  <span class="text-dark">
+          <%= property.property_accesses.count %> Colaborador(es)
+        </span>
                 </div>
               </div>
             </div>
           <% end %>
+
         </div>
       <% end %>
     </div>
