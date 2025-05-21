@@ -1,11 +1,15 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[edit update destroy]
+  before_action :set_task, only: %i[edit show update destroy]
 
   def new
     @task = Task.new
     @animal_production = AnimalProduction.find(params[:id])
     @task_settings = @animal_production.production_module&.settings || {}
     @supplies = Supply.all
+  end
+
+  def show
+    @supply = Supply.find_by(id: @task.supply_id)
   end
 
   def create
@@ -40,7 +44,7 @@ class TasksController < ApplicationController
   private
 
   def set_task
-    @task = @animal_production.tasks.find(params[:id])
+    @task = Task.find(params[:id])
   end
 
   def task_params
@@ -54,7 +58,8 @@ class TasksController < ApplicationController
       :observation,
       :task_type,
       :animal_production_id,
-      :responsible
+      :responsible,
+      :image
     )
   end
 end

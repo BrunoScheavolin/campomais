@@ -1,0 +1,6 @@
+<div class="container d-flex justify-content-center">
+    <div class="card p-3 rounded w-100 mx-auto" style="max-width: 350px; background-color: white;">
+      <h5>Editar Módulo <%= @production_module.module_type %></h5>
+      <%= render "form_#{@production_module.module_type}", production_module: @production_module %>
+    </div>
+</div>

@@ -33,7 +33,7 @@ class Admin::ProductionModulesController < ApplicationController
     @production_module.production_settings = extract_production_settings(params[:production_settings]) if params[:production_settings]
 
     if @production_module.update(production_module_params)
-      redirect_to new_admin_production_module_path(@production_module), notice: "Módulo atualizado com sucesso."
+      redirect_to admin_production_module_path(@production_module), notice: "Módulo atualizado com sucesso."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -54,14 +54,14 @@ class Admin::ProductionModulesController < ApplicationController
     base = params.require(:production_module).permit(
       :name, :active, :module_type,
       :description, :due_date, :priority, :uses_supplies, :observation,
-      :task_type, :responsible,
+      :task_type, :responsible, :image,
       :breed, :animal_quantity, :average_weight, :eggs_produced,
       :milk_production, :used_area, :notes
     )
 
     base[:settings] = extract_settings(base.slice(
       :description, :due_date, :priority, :uses_supplies,
-      :task_type, :responsible, :observation
+      :task_type, :responsible, :observation, :image
     ))
 
     base[:production_settings] = extract_production_settings(base.slice(
@@ -71,7 +71,7 @@ class Admin::ProductionModulesController < ApplicationController
 
     base.except(
       :description, :due_date, :priority, :uses_supplies,
-      :task_type, :responsible, :observation,
+      :task_type, :responsible, :observation, :image,
       :breed, :animal_quantity, :average_weight, :eggs_produced,
       :milk_production, :used_area, :notes
     )
@@ -80,7 +80,7 @@ class Admin::ProductionModulesController < ApplicationController
   def extract_settings(fields)
     fields.to_h.slice(
       "description", "due_date", "priority", "uses_supplies",
-      "observation", "task_type", "responsible"
+      "observation", "task_type", "responsible", "image"
     )
   end
 
