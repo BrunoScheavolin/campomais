@@ -5,6 +5,7 @@ class CreateModules < ActiveRecord::Migration[7.2]
       t.boolean :active
       t.json :settings
       t.integer :module_type
+      t.json :production_settings
       t.references :admin, null: false, foreign_key: true
 
       t.timestamps

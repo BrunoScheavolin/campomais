@@ -16,7 +16,8 @@ class Admin::PropertiesController < AdminController
     @property = Property.new(property_params)
     @property.admin_id = current_admin.id
     if @property.save
-      redirect_to admin_property_path(@property), notice: "Property created successfully!"
+      flash[:success] = "Propriedade criada!"
+      redirect_to admin_property_path(@property)
     else
       render :new, status: :unprocessable_entity
     end

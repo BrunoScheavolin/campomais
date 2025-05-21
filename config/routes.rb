@@ -16,12 +16,15 @@ Rails.application.routes.draw do
   }
 
   namespace :admin do
+    resources :supplies
     get "/", to: "home#index", as: "home"
     resources :properties, expect: %i[create index update destroy new edit show]
     resources :animal_productions, expect: %i[create index update destroy new edit show]
     resources :production_modules, only: [:new, :create, :destroy, :index, :show]
     resources :property_accesses, only: [:new, :create, :destroy]
   end
+
+  resources :tasks, only: [:new, :create, :destroy]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

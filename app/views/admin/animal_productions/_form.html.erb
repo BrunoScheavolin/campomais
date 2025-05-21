@@ -1,5 +1,4 @@
 <%= form_with(model: [:admin, @animal_production], class: "row g-3", data: { turbo: false }) do |f| %>
-  <%= f.hidden_field :property_id, value: @property.id %>
   <div class="col-12">
     <%= f.text_field :name, class: "form-control", placeholder: "Ex: Produção de Gado 2025" %>
   </div>
@@ -10,34 +9,68 @@
   </div>
 
   <div class="col-12">
-    <%= f.label :end_date, "Fim do Ciclo(data estiupalada)", class: "form-label" %>
+    <%= f.label :end_date, "Fim do Ciclo(data estipulada)", class: "form-label" %>
     <%= f.date_field :end_date, class: "form-control" %>
   </div>
 
-  <div class="col-12">
-    <%= f.label :animal_quantity, "Quantidade de Animais", class: "form-label" %>
-    <%= f.number_field :animal_quantity, class: "form-control", min: 0 %>
-  </div>
+  <% production_settings = @animal_production.production_module&.production_settings || {} %>
+
+  <% if production_settings["breed"] %>
+    <div class="col-12">
+      <%= f.label :breed, "Raça", class: "form-label" %>
+      <%= f.text_field :breed, class: "form-control" %>
+    </div>
+  <% end %>
+
+  <% if production_settings["animal_quantity"] %>
+    <div class="col-12">
+      <%= f.label :animal_quantity, "Quantidade de Animais", class: "form-label" %>
+      <%= f.number_field :animal_quantity, class: "form-control", min: 0 %>
+    </div>
+  <% end %>
 
   <div class="col-12">
-    <%= f.label :average_weight, "Peso Médio (em arrobas)", class: "form-label" %>
-    <%= f.text_field :average_weight, class: "form-control", placeholder: "Ex: 20 arrobas" %>
+    <%= f.label :expenses, "Investimento Inicial", class: "form-label" %>
+    <%= f.text_field :expenses, class: "form-control" %>
   </div>
 
 
-  <div class="col-12">
-    <%= f.label :production_module_id, "Módulo de Produção", class: "form-label" %>
-    <%= f.collection_select :production_module_id, @production_modules, :id, :name, { prompt: "Selecione um módulo de produção" }, class: "form-control" %>
-  </div>
+  <% if production_settings["average_weight"] %>
+    <div class="col-12">
+      <%= f.label :average_weight, "Peso Médio (em arrobas)", class: "form-label" %>
+      <%= f.text_field :average_weight, class: "form-control", placeholder: "Ex: 20 arrobas" %>
+    </div>
+  <% end %>
+
+  <% if production_settings["eggs_produced"] %>
+    <div class="col-12">
+      <%= f.label :eggs_produced, "Ovos Produzidos", class: "form-label" %>
+      <%= f.number_field :eggs_produced, class: "form-control", min: 0 %>
+    </div>
+  <% end %>
+
+  <% if production_settings["milk_production"] %>
+    <div class="col-12">
+      <%= f.label :milk_production, "Produção de Leite (litros)", class: "form-label" %>
+      <%= f.number_field :milk_production, class: "form-control", step: 0.01 %>
+    </div>
+  <% end %>
+
+  <% if production_settings["used_area"] %>
+    <div class="col-12">
+      <%= f.label :used_area, "Área Utilizada (alqueires)", class: "form-label" %>
+      <%= f.number_field :used_area, class: "form-control", step: 0.01 %>
+    </div>
+  <% end %>
 
   <div class="col-12">
     <%= f.label :notes, "Notas", class: "form-label" %>
     <%= f.text_area :notes, class: "form-control", rows: 3, placeholder: "Adicione informações adicionais sobre a produção" %>
   </div>
 
+
   <div class="col-12 d-flex justify-content-between mt-4">
     <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
     <%= f.submit "Salvar", class: "btn btn-primary" %>
   </div>
-
 <% end %>

@@ -18,7 +18,8 @@ class Admin::PropertyAccessesController < AdminController
     )
 
     if @property_access.save
-      redirect_to admin_property_path(@property_access.property), notice: "Usuário adicionado com sucesso!"
+      flash[:success] = "Acesso criado!"
+      redirect_to admin_property_path(@property_access.property)
     else
       redirect_back fallback_location: admin_properties_path, alert: "Erro ao adicionar usuário."
     end

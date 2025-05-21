@@ -1,0 +1,28 @@
+.flash-message {
+  background: #00c851;
+  border-radius: 5px;
+  position: fixed;
+  bottom: 10%;
+  right: 15px;
+  z-index: 9999;
+  max-width: 300px;
+  font-size: 0.9rem;
+}
+
+.flash-message p {
+  margin: 0;
+  padding: 8px 12px;
+  color: #fff;
+}
+
+.message-success {
+  background: #00c851;
+}
+
+.message-error {
+  background: red;
+}
+
+.brown-icon {
+  color: saddlebrown;
+}
