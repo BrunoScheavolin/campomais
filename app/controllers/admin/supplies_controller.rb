@@ -23,7 +23,11 @@ class Admin::SuppliesController < ApplicationController
     @supply.animal_production_id = @animal_production.id if @animal_production.present?
 
     if @supply.save
-      UpdateAnimalProductionExpenses.new(@supply).call
+      CreateExpense.new(
+        description: @supply.description,
+        value: @supply.expense,
+        animal_production_id: @supply.animal_production_id
+      ).call
       flash[:success] = "Insumo adicionado!"
       redirect_to admin_animal_production_path(@supply.animal_production_id)
     else
@@ -33,7 +37,8 @@ class Admin::SuppliesController < ApplicationController
 
   def update
     if @supply.update(supply_params)
-      redirect_to admin_supplies_path, notice: "Insumo atualizado com sucesso!"
+      flash[:success] = "Insumo atualizado com sucesso!"
+      redirect_to admin_supplies_path
     else
       render :edit, status: :unprocessable_entity
     end
@@ -41,7 +46,8 @@ class Admin::SuppliesController < ApplicationController
 
   def destroy
     @supply.destroy
-    redirect_to admin_supplies_path, notice: "Insumo excluído com sucesso!", status: :see_other
+    flash[:success] = "Insumo excluído com sucesso!"
+    redirect_to admin_supplies_path, status: :see_other
   end
 
   private

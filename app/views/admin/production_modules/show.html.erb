@@ -1,12 +1,14 @@
-<div class="container">
+<div class="container py-4">
   <div class="row justify-content-center">
-    <div class="col-md-6 mb-4">
-      <div class="card p-3 shadow-sm rounded w-100" style="background-color: white;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h2 class="text-success mb-0"><%= @production_module.name %></h2>
+    <div class="col-md-8">
+
+      <div class="card p-4 shadow-sm rounded-4 mb-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h4 class="text-success fw-bold mb-0"><%= @production_module.name %></h4>
+
           <div class="dropdown">
             <button class="btn btn-light border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-three-dots"></i>
+              <i class="bi bi-three-dots fs-5"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
               <li><%= link_to "Editar", edit_admin_production_module_path(@production_module), class: "dropdown-item" %></li>
@@ -20,78 +22,77 @@
           </div>
         </div>
 
-        <% settings = @production_module.settings || {} %>
-        <% production_settings = @production_module.production_settings || {} %>
-
-        <p><strong>Tipo do Módulo:</strong> <%= @production_module.module_type %></p>
-        <p><strong>Ativo:</strong> <%= @production_module.active? ? 'Sim' : 'Não' %></p>
-        <hr>
-
-        <h5 class="text-success">Configurações de Tarefa</h5>
-
-        <% if settings["description"] %>
-          <p><strong>Descrição</strong></p>
-        <% end %>
-
-        <% if settings["due_date"] %>
-          <p><strong>Prazo</strong></p>
-        <% end %>
-
-        <% if settings["priority"] %>
-          <p><strong>Prioridade</strong></p>
-        <% end %>
-
-        <% if settings["responsible"] %>
-          <p><strong>Responsável</strong></p>
-        <% end %>
-
-        <% if settings["uses_supplies"] %>
-          <p><strong>Usa Insumos</strong></p>
-        <% end %>
-
-        <% if settings["image"] %>
-          <p><strong>Imagem</strong></p>
-        <% end %>
-
-        <% if settings["observation"] %>
-          <p><strong>Observação</strong></p>
-        <% end %>
-
-        <hr>
-        <h5 class="text-success">Configurações de Produção</h5>
-
-        <% if production_settings["breed"] %>
-          <p><strong>Raça</strong></p>
-        <% end %>
-
-        <% if production_settings["animal_quantity"] %>
-          <p><strong>Quantidade de Animais</strong></p>
-        <% end %>
-
-        <% if production_settings["average_weight"] %>
-          <p><strong>Peso Médio</strong></p>
-        <% end %>
-
-        <% if production_settings["eggs_produced"] %>
-          <p><strong>Ovos Produzidos</strong></p>
-        <% end %>
-
-        <% if production_settings["milk_production"] %>
-          <p><strong>Produção de Leite</strong></p>
-        <% end %>
-
-        <% if production_settings["used_area"] %>
-          <p><strong>Área Utilizada</strong></p>
-        <% end %>
-
-        <% if production_settings["notes"] %>
-          <p><strong>Notas</strong></p>
-        <% end %>
-
-        <div class="d-flex justify-content-start mt-4">
-          <%= link_to "Voltar", admin_production_modules_path, class: "btn btn-secondary", data: { turbo: false } %>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <p class="mb-1 text-muted small fw-semibold">Tipo do Módulo</p>
+            <p class="mb-0"><%= @production_module.module_type %></p>
+          </div>
         </div>
       </div>
+
+      <div class="card p-4 shadow-sm rounded-4 mb-4">
+        <h5 class="text-success mb-3">Configurações de Produção</h5>
+
+        <% production_settings = @production_module.production_settings || {} %>
+        <div class="row">
+          <% if production_settings["breed"] %>
+            <div class="col-md-6 mb-2"><strong>Raça</strong></div>
+          <% end %>
+          <% if production_settings["animal_quantity"] %>
+            <div class="col-md-6 mb-2"><strong>Quantidade de Animais</strong></div>
+          <% end %>
+          <% if production_settings["average_weight"] %>
+            <div class="col-md-6 mb-2"><strong>Peso Médio</strong></div>
+          <% end %>
+          <% if production_settings["eggs_produced"] %>
+            <div class="col-md-6 mb-2"><strong>Ovos Produzidos</strong></div>
+          <% end %>
+          <% if production_settings["milk_production"] %>
+            <div class="col-md-6 mb-2"><strong>Produção de Leite</strong></div>
+          <% end %>
+          <% if production_settings["used_area"] %>
+            <div class="col-md-6 mb-2"><strong>Área Utilizada</strong></div>
+          <% end %>
+          <% if production_settings["notes"] %>
+            <div class="col-md-6 mb-2"><strong>Notas</strong></div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card p-4 shadow-sm rounded-4 mb-4">
+        <h5 class="text-success mb-3">Configurações de Tarefa</h5>
+
+        <% settings = @production_module.settings || {} %>
+        <div class="row">
+          <% if settings["description"] %>
+            <div class="col-md-6 mb-2"><strong>Descrição</strong></div>
+          <% end %>
+          <% if settings["due_date"] %>
+            <div class="col-md-6 mb-2"><strong>Prazo</strong></div>
+          <% end %>
+          <% if settings["priority"] %>
+            <div class="col-md-6 mb-2"><strong>Prioridade</strong></div>
+          <% end %>
+          <% if settings["responsible"] %>
+            <div class="col-md-6 mb-2"><strong>Responsável</strong></div>
+          <% end %>
+          <% if settings["uses_supplies"] %>
+            <div class="col-md-6 mb-2"><strong>Usa Insumos</strong></div>
+          <% end %>
+          <% if settings["image"] %>
+            <div class="col-md-6 mb-2"><strong>Imagem</strong></div>
+          <% end %>
+          <% if settings["observation"] %>
+            <div class="col-md-6 mb-2"><strong>Observação</strong></div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Botão Voltar -->
+      <div class="d-flex justify-content-start">
+        <%= link_to "Voltar", admin_production_modules_path, class: "btn btn-secondary", data: { turbo: false } %>
+      </div>
+
     </div>
   </div>
 </div>
