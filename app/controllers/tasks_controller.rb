@@ -15,7 +15,12 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      UpdateAnimalProductionExpenses.new(@task).call
+      CreateExpense.new(
+        description: @task.description,
+        value: @task.expense,
+        animal_production_id: @task.animal_production_id
+      ).call
+
       UpdateSupplyQuantity.new(@task).call
       flash[:success] = "Tarefa criada!"
       redirect_to admin_animal_production_path(@task.animal_production_id)
@@ -37,8 +42,9 @@ class TasksController < ApplicationController
   end
 
   def destroy
+    @animal_production_id = @task.animal_production_id
     @task.destroy
-    redirect_to @animal_production, notice: "Tarefa excluída com sucesso."
+    redirect_to admin_animal_production_path(@animal_production_id), notice: "Tarefa excluída com sucesso."
   end
 
   private

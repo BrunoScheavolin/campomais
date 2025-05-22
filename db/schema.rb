@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_21_172858) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_21_220016) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,7 +69,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_21_172858) do
     t.text "notes"
     t.decimal "used_area", precision: 10, scale: 2
     t.decimal "revenue", precision: 14, scale: 2, default: "0.0"
-    t.decimal "expenses", precision: 14, scale: 2, default: "0.0"
+    t.decimal "initial_investment", precision: 14, scale: 2, default: "0.0"
     t.bigint "production_module_id", null: false
     t.bigint "admin_id", null: false
     t.bigint "property_id", null: false
@@ -78,6 +78,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_21_172858) do
     t.index ["admin_id"], name: "index_animal_productions_on_admin_id"
     t.index ["production_module_id"], name: "index_animal_productions_on_production_module_id"
     t.index ["property_id"], name: "index_animal_productions_on_property_id"
+  end
+
+  create_table "expenses", force: :cascade do |t|
+    t.string "description"
+    t.bigint "animal_production_id", null: false
+    t.decimal "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["animal_production_id"], name: "index_expenses_on_animal_production_id"
   end
 
   create_table "production_modules", force: :cascade do |t|
@@ -157,6 +166,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_21_172858) do
   add_foreign_key "animal_productions", "admins"
   add_foreign_key "animal_productions", "production_modules"
   add_foreign_key "animal_productions", "properties"
+  add_foreign_key "expenses", "animal_productions"
   add_foreign_key "production_modules", "admins"
   add_foreign_key "properties", "admins"
   add_foreign_key "property_accesses", "properties"

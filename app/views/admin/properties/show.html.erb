@@ -1,49 +1,72 @@
-<div class="container d-flex justify-content-center">
-  <div class="card p-3 shadow-sm rounded w-100 mx-auto" style="max-width: 350px; background-color: white;">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="text-success mb-0"><%= @property.name %></h2>
-      <div class="dropdown">
-        <button class="btn btn-light border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-three-dots"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-          <li><%= link_to "Editar", edit_admin_property_path(@property), class: "dropdown-item" %></li>
-          <li><%= link_to "Novo Acesso", new_admin_property_access_path(id: @property.id), class: "dropdown-item" %></li>
-          <li><%= link_to "Nova Produção", new_admin_animal_production_path(id: @property.id), data: { turbo: false }, class: "dropdown-item" %></li>
-          <li>
-            <%= button_to "Excluir", admin_property_path(@property),
-                          method: :delete,
-                          data: { turbo: false, confirm: "Tem certeza?" },
-                          class: "dropdown-item text-danger" %>
-          </li>
-        </ul>
+<div class="container d-flex justify-content-center py-4">
+  <div class="w-100" style="max-width: 900px;">
+
+    <div class="card shadow-sm rounded-4 mb-4 p-4">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <h4 class="fw-bold text-success mb-0"><%= @property.name %></h4>
+        <div class="dropdown">
+          <button class="btn btn-light border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-three-dots fs-5"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            <li><%= link_to "Editar", edit_admin_property_path(@property), class: "dropdown-item" %></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <%= button_to "Excluir", admin_property_path(@property),
+                            method: :delete,
+                            data: { turbo: false, confirm: "Tem certeza?" },
+                            class: "dropdown-item text-danger" %>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <p><strong>Endereço:</strong> <%= @property.address %></p>
-    <p><strong>Tamanho:</strong> <%= @property.size %></p>
-
-
-    <p><strong>Colaboradores</strong></p>
-    <ul class="list-group mb-3 gap-2">
-      <% @property.property_accesses.each do |access| %>
-        <li class="list-group-item d-flex justify-content-between align-items-center border rounded-3">
-          <span><i class="bi bi-person-circle me-2"></i><%= access.user.name %></span>
-        </li>
+    <div class="card shadow-sm rounded-4 mb-4 p-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-semibold text-muted mb-0">Colaboradores</h5>
+        <%= link_to new_admin_property_access_path(id: @property.id), class: "btn btn-light border-0 p-1", title: "Novo Acesso" do %>
+          <i class="bi bi-plus-lg"></i>
+        <% end %>
+      </div>
+      <% if @property.property_accesses.any? %>
+        <ul class="list-group list-group-flush gap-2">
+          <% @property.property_accesses.each do |access| %>
+            <li class="list-group-item border rounded d-flex align-items-center">
+              <i class="bi bi-person-circle me-2 text-secondary fs-5"></i>
+              <span class="fw-medium"><%= access.user.name %></span>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted small fst-italic">Nenhum colaborador adicionado.</p>
       <% end %>
-    </ul>
+    </div>
 
-    <p><strong>Produções</strong></p>
-    <ul class="list-group mb-3 gap-2">
-      <% @property.animal_productions.each do |production| %>
-        <li class="list-group-item d-flex justify-content-between align-items-center border rounded-3">
-          <%= link_to production.name, admin_animal_production_path(production), data: { turbo: false }, class: "text-decoration-none" %>
-        </li>
+    <div class="card shadow-sm rounded-4 mb-4 p-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-semibold text-muted mb-0">Produções</h5>
+        <%= link_to new_admin_animal_production_path(id: @property.id), class: "btn btn-light border-0 p-1", title: "Nova Produção", data: { turbo: false } do %>
+          <i class="bi bi-plus-lg"></i>
+        <% end %>
+      </div>
+      <% if @property.animal_productions.any? %>
+        <ul class="list-group list-group-flush gap-2">
+          <% @property.animal_productions.each do |production| %>
+            <li class="list-group-item rounded d-flex justify-content-between align-items-center px-0">
+              <%= link_to production.name, admin_animal_production_path(production), data: { turbo: false }, class: "text-decoration-none fw-medium text-dark" %>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted small fst-italic">Nenhuma produção cadastrada.</p>
       <% end %>
-    </ul>
+    </div>
 
-    <div class="d-flex justify-content-start mt-4">
+    <div class="d-flex justify-content-start">
       <%= link_to "Voltar", admin_properties_path, class: "btn btn-secondary", data: { turbo: false } %>
     </div>
+
   </div>
 </div>

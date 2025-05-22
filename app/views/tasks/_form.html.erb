@@ -10,9 +10,8 @@
 
   <div class="col-12">
     <%= f.label :description, "Descrição", class: "form-label" %>
-    <%= f.text_area :description, class: "form-control", rows: 3, placeholder: "Descreva a tarefa com detalhes" %>
+    <%= f.text_area :description, class: "form-control", rows: 3, placeholder: "Descreva a tarefa com detalhes", required: true %>
   </div>
-
 
   <div class="col-12">
     <%= f.label :expense, "Despesa", class: "form-label" %>

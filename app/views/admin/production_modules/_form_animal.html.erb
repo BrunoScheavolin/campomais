@@ -40,7 +40,7 @@
             <%= f.check_box field, {
               class: "form-check-input",
               id: field,
-              checked: @production_module.production_settings[field.to_s].present?
+              checked: (@production_module.production_settings&.[](field.to_s) || false).present?
             }, true, false %>
             <%= f.label field, class: "form-check-label", for: field do %>
               <%= label %>
@@ -66,7 +66,7 @@
             <%= f.check_box field, {
               class: "form-check-input",
               id: field,
-              checked: @production_module.settings[field.to_s].present?
+              checked: (@production_module.settings&.[](field.to_s) || false).present?
             }, true, false %>
             <%= f.label field, class: "form-check-label", for: field do %>
               <%= label %>

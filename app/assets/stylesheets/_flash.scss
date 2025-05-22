@@ -26,3 +26,12 @@
 .brown-icon {
   color: saddlebrown;
 }
+
+.nav-tabs .nav-link {
+  color: black; /* padrão */
+}
+
+.nav-tabs .nav-link.active {
+  color: #198754 !important; /* verde Bootstrap (text-success) */
+  font-weight: 600;
+}

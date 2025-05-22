@@ -65,7 +65,7 @@ class Admin::AnimalProductionsController < AdminController
       :average_weight,
       :notes,
       :revenue,
-      :expenses,
+      :initial_investment,
       :production_module_id,
       :property_id,
       :eggs_produced,
