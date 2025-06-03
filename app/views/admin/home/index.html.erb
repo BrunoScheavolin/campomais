@@ -1,31 +1,30 @@
 <div class="container py-4">
   <div class="row g-3 mb-4 justify-content-center">
-    <!-- Blocos aqui (mesmo código do anterior) -->
     <div class="col-6 col-sm-6 col-md-3">
       <div class="card text-center shadow-sm p-3">
         <i class="fas fa-tractor fa-2x text-success mb-2"></i>
-        <h5 class="mb-1">15</h5>
+        <h5 class="mb-1"><%= @animal_productions.count %></h5>
         <p class="mb-0">Atividades de Produção</p>
       </div>
     </div>
     <div class="col-6 col-sm-6 col-md-3">
       <div class="card text-center shadow-sm p-3">
         <i class="fas fa-house fa-2x text-primary mb-2"></i>
-        <h5 class="mb-1">12</h5>
-        <p class="mb-0">Propriedades cadastradas</p>
+        <h5 class="mb-1"><%= @properties.count %></h5>
+        <p class="mb-0">Propriedades</p>
       </div>
     </div>
     <div class="col-6 col-sm-6 col-md-3">
       <div class="card text-center shadow-sm p-3">
         <i class="fas fa-cubes fa-2x text-info mb-2"></i>
-        <h5 class="mb-1">8</h5>
-        <p class="mb-0">Módulos cadastrados</p>
+        <h5 class="mb-1"><%= @production_modules.count %></h5>
+        <p class="mb-0">Módulos</p>
       </div>
     </div>
     <div class="col-6 col-sm-6 col-md-3">
       <div class="card text-center shadow-sm p-3">
         <i class="fas fa-chart-line fa-2x text-warning mb-2"></i>
-        <h5 class="mb-1">R$ 58.000,00</h5>
+        <h5 class="mb-1">R$ 10.000</h5>
         <p class="mb-0">Produção total</p>
       </div>
     </div>

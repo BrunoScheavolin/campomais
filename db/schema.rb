@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_21_220016) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_22_163006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -120,6 +120,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_21_220016) do
     t.index ["user_id"], name: "index_property_accesses_on_user_id"
   end
 
+  create_table "revenues", force: :cascade do |t|
+    t.string "description"
+    t.bigint "animal_production_id", null: false
+    t.decimal "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["animal_production_id"], name: "index_revenues_on_animal_production_id"
+  end
+
   create_table "supplies", force: :cascade do |t|
     t.string "name"
     t.integer "quantity"
@@ -171,6 +180,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_21_220016) do
   add_foreign_key "properties", "admins"
   add_foreign_key "property_accesses", "properties"
   add_foreign_key "property_accesses", "users"
+  add_foreign_key "revenues", "animal_productions"
   add_foreign_key "supplies", "animal_productions"
   add_foreign_key "tasks", "animal_productions"
 end

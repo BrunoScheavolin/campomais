@@ -24,7 +24,7 @@ class Admin::SuppliesController < ApplicationController
 
     if @supply.save
       CreateExpense.new(
-        description: @supply.description,
+        description: @supply.name,
         value: @supply.expense,
         animal_production_id: @supply.animal_production_id
       ).call

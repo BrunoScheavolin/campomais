@@ -31,6 +31,11 @@ class Admin::AnimalProductionsController < AdminController
 
   def update
     if @animal_production.update(animal_production_params)
+      CreateExpense.new(
+        description: @animal_production.name,
+        value: @animal_production.initial_investment,
+        animal_production_id: @animal_production.id
+      ).call
       redirect_to admin_animal_production_path(@animal_production), notice: "Produção animal atualizada com sucesso!"
     else
       render :edit, status: :unprocessable_entity

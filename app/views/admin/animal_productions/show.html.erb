@@ -29,7 +29,6 @@
                       <i class="bi bi-three-dots"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                      <li><%= link_to "Novo Insumo", new_admin_supply_path(id: @animal_production.id), class: "dropdown-item" %></li>
                       <li><%= link_to "Editar", edit_admin_animal_production_path(@animal_production), class: "dropdown-item" %></li>
                       <li>
                         <%= button_to "Excluir", admin_animal_production_path(@animal_production),
@@ -117,7 +116,7 @@
                       <% @animal_production.tasks.each_with_index do |task| %>
                         <tr>
                           <td>
-                              <%= link_to task.task_type, task_path(task), class: "text-decoration-none text-primary fw-semibold" %>
+                            <%= link_to task.task_type, task_path(task), class: "text-decoration-none text-primary fw-semibold" %>
                           </td>
                           <td><%= task.responsible %></td>
                           <td><%= task.due_date&.strftime("%d/%m/%Y") %></td>
@@ -142,25 +141,27 @@
                 </div>
 
                 <% if @animal_production.supplies.any? %>
-                  <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                      <th>Nome</th>
-                      <th>Quantidade</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <% @animal_production.supplies.each do |supply| %>
+                  <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                      <thead class="table-light">
                       <tr>
-                        <td><%= supply.name %></td>
-                        <td><%= supply.quantity %></td>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
                       </tr>
-                    <% end %>
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                      <% @animal_production.supplies.each do |supply| %>
+                        <tr>
+                          <td><%= supply.name %></td>
+                          <td><%= supply.quantity %></td>
+                        </tr>
+                      <% end %>
+                      </tbody>
+                    </table>
                 <% else %>
                   <p>Não há insumos cadastrados para esta produção.</p>
                 <% end %>
+                </div>
               </div>
             </div>
           </div>
@@ -178,24 +179,28 @@
                 </div>
 
                 <% if @animal_production.expenses.any? %>
-                  <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                      <th>Descrição</th>
-                      <th>Valor</th>
-                      <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <% @animal_production.expenses.each do |expense| %>
-                      <tr>
-                        <td><%= expense.description %></td>
-                        <td>R$ <%= number_to_currency(expense.value, unit: "", separator: ",", delimiter: ".") %></td>
-                        <td><%= link_to "Ver", admin_expense_path(expense), class: "btn btn-sm btn-primary" %></td>
+                  <div class="table-responsive">
+                    <table class="table table-borderless">
+                      <thead>
+                      <tr class="border-bottom">
+                        <th>Descrição</th>
+                        <th>Valor</th>
                       </tr>
-                    <% end %>
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                      <% @animal_production.expenses.each do |expense| %>
+                        <tr class="border-bottom">
+                          <td>
+                            <%= link_to expense.description, admin_expense_path(expense), class: "text-decoration-none" %>
+                          </td>
+                          <td>
+                            R$ <%= number_to_currency(expense.value, unit: "", separator: ",", delimiter: ".") %>
+                          </td>
+                        </tr>
+                      <% end %>
+                      </tbody>
+                    </table>
+                  </div>
                 <% else %>
                   <p>Não há despesas cadastradas para esta produção.</p>
                 <% end %>
@@ -204,13 +209,51 @@
 
             <div class="col-md-6 mb-4">
               <div class="card shadow-sm rounded-4 p-4">
-                <h4 class="text-success">Financeiro</h4>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4 class="text-success mb-0">Receitas</h4>
+                  <%= link_to new_admin_revenue_path(animal_production_id: @animal_production.id), class: "btn btn-light border-0", title: "Nova Receita" do %>
+                    <i class="bi bi-plus-lg"></i>
+                  <% end %>
+                </div>
 
+                <% if @animal_production.revenues.any? %>
+                  <div class="table-responsive">
+                    <table class="table table-borderless">
+                      <thead>
+                      <tr class="border-bottom">
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <% @animal_production.revenues.each do |revenue| %>
+                        <tr class="border-bottom">
+                          <td>
+                            <%= link_to revenue.description, admin_revenue_path(revenue), class: "text-decoration-none text-primary fw-semibold" %>
+                          </td>
+                          <td>R$ <%= number_to_currency(revenue.value, unit: "", separator: ",", delimiter: ".") %></td>
+                        </tr>
+                      <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                <% else %>
+                  <p>Não há receitas cadastradas para esta produção.</p>
+                <% end %>
+              </div>
+            </div>
+
+
+            <div class="col-md-6 mb-4">
+              <div class="card shadow-sm rounded-4 p-4">
+                <h4 class="text-success">Resultado</h4>
+
+                <% total_revenues = @animal_production.revenues.sum(:value) %>
                 <% total_expenses = @animal_production.expenses.sum(:value) + @animal_production.initial_investment.to_f %>
-                <% profit = @animal_production.revenue.to_f - total_expenses %>
+                <% profit = total_revenues - total_expenses %>
 
                 <p><strong>Receita:</strong>
-                  R$ <%= number_to_currency(@animal_production.revenue, unit: "", separator: ",", delimiter: ".") %>
+                  R$ <%= number_to_currency(total_revenues, unit: "", separator: ",", delimiter: ".") %>
                 </p>
 
                 <p><strong>Despesas:</strong>
@@ -221,11 +264,12 @@
 
                 <p><strong>Lucro:</strong>
                   <span class="<%= profit >= 0 ? 'text-success' : 'text-danger' %>">
-                      R$ <%= number_to_currency(profit, unit: "", separator: ",", delimiter: ".") %>
-                    </span>
+        R$ <%= number_to_currency(profit, unit: "", separator: ",", delimiter: ".") %>
+      </span>
                 </p>
               </div>
             </div>
+
           </div>
         </div>
       </div>
