@@ -16,13 +16,15 @@ Rails.application.routes.draw do
   }
 
   namespace :admin do
-    resources :supplies
     get "/", to: "home#index", as: "home"
+    resources :supplies
+    resources :revenues
     resources :properties, expect: %i[create index update destroy new edit show]
     resources :animal_productions, expect: %i[create index update destroy new edit show]
     resources :production_modules, only: [:new, :create, :edit, :update, :destroy, :index, :show]
     resources :expenses, only: [:new, :create, :edit, :update, :destroy, :index, :show]
     resources :property_accesses, only: [:new, :create, :destroy]
+    resources :finances, only: [:index]
   end
 
   resources :tasks, only: [:new, :create, :show, :destroy]

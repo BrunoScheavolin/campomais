@@ -1,0 +1,31 @@
+<%= form_with(model: @revenue, url: admin_revenues_path, class: "row g-3", data: { turbo: false }, local: true) do |form| %>
+  <%= form.hidden_field :animal_production_id %>
+
+  <% if @revenue.errors.any? %>
+    <div id="error_explanation" class="col-12">
+      <div class="alert alert-danger">
+        <h4><%= pluralize(@revenue.errors.count, "erro") %> impediram esta receita de ser salva:</h4>
+        <ul>
+          <% @revenue.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-12">
+    <small class="text-muted">Descrição</small>
+    <%= form.text_field :description, class: "form-control", placeholder: "Ex: Venda de leite, Venda de ovos, etc.", required: true %>
+  </div>
+
+  <div class="col-12">
+    <small class="text-muted">Valor</small>
+    <%= form.number_field :value, class: "form-control", step: 0.01, min: 0, required: true %>
+  </div>
+
+  <div class="col-12 d-flex justify-content-between mt-4">
+    <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
+    <%= form.submit "Salvar", class: "btn btn-primary" %>
+  </div>
+<% end %>

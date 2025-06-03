@@ -1,0 +1,107 @@
+<div class="container">
+  <div class="container mb-4">
+    <div class="row justify-content-center text-center">
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm rounded-4 p-4">
+          <h5 class="text-success">Receitas</h5>
+          <p class="mb-0 fs-5">
+            R$ <%= number_to_currency(@revenues.sum(:value), unit: "", separator: ",", delimiter: ".") %>
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm rounded-4 p-4">
+          <h5 class="">Despesas</h5>
+          <p class="mb-0 fs-5">
+            R$ <%= number_to_currency(@expenses.sum(:value), unit: "", separator: ",", delimiter: ".") %>
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm rounded-4 p-4">
+          <h5 class="text-primary">Resultado</h5>
+          <% total_revenues = @revenues.sum(:value) %>
+          <% total_expenses = @expenses.sum(:value) %>
+          <% profit = total_revenues - total_expenses %>
+          <p class="mb-0 fs-5 <%= profit >= 0 ? 'text-success' : 'text-danger' %>">
+            R$ <%= number_to_currency(profit, unit: "", separator: ",", delimiter: ".") %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <ul class="nav nav-tabs mb-4" id="financeTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="revenues-tab" data-bs-toggle="tab" data-bs-target="#revenues" type="button" role="tab" aria-controls="revenues" aria-selected="true">
+        Receitas
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="expenses-tab" data-bs-toggle="tab" data-bs-target="#expenses" type="button" role="tab" aria-controls="expenses" aria-selected="false">
+        Despesas
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="financeTabsContent">
+    <div class="tab-pane fade show active" id="revenues" role="tabpanel" aria-labelledby="revenues-tab">
+      <div class="table-responsive">
+        <table class="table table-borderless">
+          <thead>
+          <tr class="border-bottom">
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Propriedade</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @revenues.each do |revenue| %>
+            <tr class="border-bottom">
+              <td>
+                <%= link_to revenue.description, admin_revenue_path(revenue), class: "text-decoration-none" %>
+              </td>
+              <td>
+                R$ <%= number_to_currency(revenue.value, unit: "", separator: ",", delimiter: ".") %>
+              </td>
+              <td>
+                <%= revenue.animal_production.property.name %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="expenses" role="tabpanel" aria-labelledby="expenses-tab">
+      <div class="table-responsive">
+        <table class="table table-borderless">
+          <thead>
+          <tr class="border-bottom">
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Propriedade</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @expenses.each do |expense| %>
+            <tr class="border-bottom">
+              <td>
+                <%= link_to expense.description, admin_expense_path(expense), class: "text-decoration-none" %>
+              </td>
+              <td>
+                R$ <%= number_to_currency(expense.value, unit: "", separator: ",", delimiter: ".") %>
+              </td>
+              <td>
+                <%= expense.animal_production.property.name %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

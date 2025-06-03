@@ -6,4 +6,5 @@ class AnimalProduction < ApplicationRecord
   has_many :tasks
   has_many :supplies
   has_many :expenses
+  has_many :revenues
 end
