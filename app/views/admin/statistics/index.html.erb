@@ -1,0 +1,184 @@
+<div class="container d-flex justify-content-center py-2">
+  <div class="d-flex justify-content-center mb-3">
+    <%= form_with url: admin_statistics_path, method: :get, local: true, class: "d-flex gap-2" do %>
+      <div class="btn-group bg-success-subtle rounded-pill p-1" role="group">
+        <%= submit_tag "Semanal", name: "period", value: "Semanal", class: "btn rounded-pill fw-semibold px-4 #{params[:period] == 'Semanal' || params[:period].blank? ? 'btn-success text-white' : 'text-dark'}", style: "text-decoration: none;" %>
+        <%= submit_tag "Mensal", name: "period", value: "Mensal", class: "btn rounded-pill fw-semibold px-4 #{params[:period] == 'Mensal' ? 'btn-success text-white' : 'text-dark'}", style: "text-decoration: none;" %>
+      </div>
+
+      <%= select_tag :year,
+                     options_for_select([2023, 2024], @selected_year.to_i),
+                     prompt: "",
+                     onchange: "this.form.submit();",
+                     class: "form-select ms-3" %>
+    <% end %>
+  </div>
+</div>
+
+
+
+
+<div class="container d-flex justify-content-center py-2">
+  <div class="w-100" style="max-width: 900px;">
+    <div class="bg-light p-4 rounded-5 shadow-sm mb-4 position-relative">
+      <%= line_chart [
+                       { name: "Receitas", data: @revenues },
+                       { name: "Despesas", data: @expenses }
+                     ],
+                     legend: false,
+                     colors: ["#10B981", "#3B82F6"],
+                     height: "200px",
+                     prefix: "R$ ",
+                     thousands: ".",
+                     decimal: ",",
+                     library: {
+                       title: nil,
+                       chart: { backgroundColor: "transparent" },
+                       scales: {
+                         x: {
+                           ticks: { color: "#6B7280", font: { size: 11 } },
+                           grid: { color: "#D1D5DB" }
+                         },
+                         y: {
+                           ticks: { color: "#6B7280", font: { size: 11 } },
+                           grid: { color: "#E5E7EB" }
+                         }
+                       }
+                     } %>
+
+      <% total_revenues = @revenues.values.sum %>
+      <% total_expenses = @expenses.values.sum %>
+
+      <div class="row text-center mt-4">
+        <div class="col">
+          <div class="d-flex justify-content-center align-items-center text-success mb-1">
+            <i class="bi bi-arrow-up-circle-fill me-2"></i>
+            <strong>Receitas</strong>
+          </div>
+          <div class="fs-5 fw-semibold text-success">
+            R$ <%= number_with_precision(total_revenues, precision: 2, delimiter: ".", separator: ",") %>
+          </div>
+        </div>
+        <div class="col">
+          <div class="d-flex justify-content-center align-items-center text-primary mb-1">
+            <i class="bi bi-arrow-down-circle-fill me-2"></i>
+            <strong>Despesas</strong>
+          </div>
+          <div class="fs-5 fw-semibold text-primary">
+            R$ <%= number_with_precision(total_expenses, precision: 2, delimiter: ".", separator: ",") %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container d-flex justify-content-center py-2">
+  <div class="w-100" style="max-width: 900px;">
+    <div class="bg-light p-4 rounded-5 shadow-sm mb-4 position-relative">
+      <%= column_chart [
+                         { name: "Receitas", data: @current_year_revenues },
+                         { name: "ReceitasEscolhidas", data: @selected_year_revenues }
+                       ],
+                       legend: false,
+                       colors: ["#10B981", "#3B82F6"],
+                       height: "200px",
+                       prefix: "R$ ",
+                       thousands: ".",
+                       decimal: ",",
+                       library: {
+                         title: nil,
+                         chart: { backgroundColor: "transparent" },
+                         scales: {
+                           x: {
+                             ticks: { color: "#6B7280", font: { size: 11 } },
+                             grid: { color: "#D1D5DB" }
+                           },
+                           y: {
+                             ticks: { color: "#6B7280", font: { size: 11 } },
+                             grid: { color: "#E5E7EB" }
+                           }
+                         }
+                       } %>
+
+      <% total_current_revenues = @current_year_revenues.values.sum %>
+      <% total_selected_revenues = @selected_year_revenues.values.sum %>
+
+      <div class="row text-center mt-4">
+        <div class="col">
+          <div class="d-flex justify-content-center align-items-center text-success mb-1">
+            <i class="bi bi-arrow-up-circle-fill me-2"></i>
+            <strong>Receitas atuais</strong>
+          </div>
+          <div class="fs-5 fw-semibold text-success">
+            R$ <%= number_with_precision(total_current_revenues, precision: 2, delimiter: ".", separator: ",") %>
+          </div>
+        </div>
+        <div class="col">
+          <div class="d-flex justify-content-center align-items-center text-primary mb-1">
+            <i class="bi bi-arrow-up-circle-fill me-2"></i>
+            <strong>Receitas <%= @selected_year %></strong>
+          </div>
+          <div class="fs-5 fw-semibold text-primary">
+            R$ <%= number_with_precision(total_selected_revenues, precision: 2, delimiter: ".", separator: ",") %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container d-flex justify-content-center py-2">
+  <div class="w-100" style="max-width: 900px;">
+    <div class="bg-light p-4 rounded-5 shadow-sm mb-4 position-relative">
+      <%= line_chart [
+                       { name: "Despesas", data: @current_year_expenses },
+                       { name: "DespesasEscolhidas", data: @selected_year_expenses }
+                     ],
+                     legend: false,
+                     colors: ["#10B981", "#3B82F6"],
+                     height: "200px",
+                     prefix: "R$ ",
+                     thousands: ".",
+                     decimal: ",",
+                     library: {
+                       title: nil,
+                       chart: { backgroundColor: "transparent" },
+                       scales: {
+                         x: {
+                           ticks: { color: "#6B7280", font: { size: 11 } },
+                           grid: { color: "#D1D5DB" }
+                         },
+                         y: {
+                           ticks: { color: "#6B7280", font: { size: 11 } },
+                           grid: { color: "#E5E7EB" }
+                         }
+                       }
+                     } %>
+
+      <% total_current_expenses = @current_year_expenses.values.sum %>
+      <% total_selected_expenses = @selected_year_expenses.values.sum %>
+
+      <div class="row text-center mt-4">
+        <div class="col">
+          <div class="d-flex justify-content-center align-items-center text-success mb-1">
+            <i class="bi bi-arrow-down-circle-fill me-2"></i>
+            <strong>Despesas atuais</strong>
+          </div>
+          <div class="fs-5 fw-semibold text-success">
+            R$ <%= number_with_precision(total_current_expenses, precision: 2, delimiter: ".", separator: ",") %>
+          </div>
+        </div>
+        <div class="col">
+          <div class="d-flex justify-content-center align-items-center text-primary mb-1">
+            <i class="bi bi-arrow-down-circle-fill me-2"></i>
+            <strong>Despesas <%= @selected_year %></strong>
+          </div>
+          <div class="fs-5 fw-semibold text-primary">
+            R$ <%= number_with_precision(total_selected_expenses, precision: 2, delimiter: ".", separator: ",") %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

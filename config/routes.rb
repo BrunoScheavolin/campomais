@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     resources :expenses, only: [:new, :create, :edit, :update, :destroy, :index, :show]
     resources :property_accesses, only: [:new, :create, :destroy]
     resources :finances, only: [:index]
+    resources :statistics, only: [:index]
   end
 
   resources :tasks, only: [:new, :create, :show, :destroy]

@@ -1,107 +1,71 @@
 <div class="container">
-  <div class="container mb-4">
-    <div class="row justify-content-center text-center">
-      <div class="col-md-4 mb-3">
-        <div class="card shadow-sm rounded-4 p-4">
-          <h5 class="text-success">Receitas</h5>
-          <p class="mb-0 fs-5">
-            R$ <%= number_to_currency(@revenues.sum(:value), unit: "", separator: ",", delimiter: ".") %>
-          </p>
+  <div class="mb-4 p-4">
+    <%= form_with url: admin_finances_path, method: :get, local: true do %>
+      <div class="row gx-3 gy-3">
+        <div class="col-6">
+          <label class="form-label text-white" for="property_id">Propriedade</label>
+          <%= select_tag :property_id,
+                         options_from_collection_for_select(@properties, :id, :name, params[:property_id]),
+                         include_blank: "Todas",
+                         class: "form-select custom-select-style",
+                         id: "property_id",
+                         onchange: "this.form.submit()" %>
+        </div>
+
+        <div class="col-6">
+          <label class="form-label text-white" for="animal_production_id">Produção</label>
+          <%= select_tag :animal_production_id,
+                         options_from_collection_for_select(@animal_productions, :id, :name, params[:animal_production_id]),
+                         include_blank: "Todas",
+                         class: "form-select custom-select-style",
+                         id: "animal_production_id",
+                         onchange: "this.form.submit()" %>
+        </div>
+
+        <div class="col-6">
+          <label class="form-label text-white" for="transaction_type">Tipo</label>
+          <%= select_tag :transaction_type,
+                         options_for_select([["Todas", ""], ["Receitas", "revenues"], ["Despesas", "expenses"]], params[:transaction_type]),
+                         class: "form-select custom-select-style",
+                         id: "transaction_type",
+                         onchange: "this.form.submit()" %>
+        </div>
+
+        <div class="col-6">
+          <label class="form-label text-white" for="start_date">A partir de</label>
+          <%= date_field_tag :start_date,
+                             params[:start_date],
+                             class: "form-control custom-select-style",
+                             id: "start_date",
+                             onchange: "this.form.submit()" %>
         </div>
       </div>
-      <div class="col-md-4 mb-3">
-        <div class="card shadow-sm rounded-4 p-4">
-          <h5 class="">Despesas</h5>
-          <p class="mb-0 fs-5">
-            R$ <%= number_to_currency(@expenses.sum(:value), unit: "", separator: ",", delimiter: ".") %>
-          </p>
-        </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="card shadow-sm rounded-4 p-4">
-          <h5 class="text-primary">Resultado</h5>
-          <% total_revenues = @revenues.sum(:value) %>
-          <% total_expenses = @expenses.sum(:value) %>
-          <% profit = total_revenues - total_expenses %>
-          <p class="mb-0 fs-5 <%= profit >= 0 ? 'text-success' : 'text-danger' %>">
-            R$ <%= number_to_currency(profit, unit: "", separator: ",", delimiter: ".") %>
-          </p>
-        </div>
-      </div>
-    </div>
+
+  <% end %>
   </div>
 
-
-
-  <ul class="nav nav-tabs mb-4" id="financeTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="revenues-tab" data-bs-toggle="tab" data-bs-target="#revenues" type="button" role="tab" aria-controls="revenues" aria-selected="true">
-        Receitas
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="expenses-tab" data-bs-toggle="tab" data-bs-target="#expenses" type="button" role="tab" aria-controls="expenses" aria-selected="false">
-        Despesas
-      </button>
-    </li>
-  </ul>
-
-  <div class="tab-content" id="financeTabsContent">
-    <div class="tab-pane fade show active" id="revenues" role="tabpanel" aria-labelledby="revenues-tab">
-      <div class="table-responsive">
-        <table class="table table-borderless">
-          <thead>
-          <tr class="border-bottom">
-            <th>Descrição</th>
-            <th>Valor</th>
-            <th>Propriedade</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @revenues.each do |revenue| %>
-            <tr class="border-bottom">
-              <td>
-                <%= link_to revenue.description, admin_revenue_path(revenue), class: "text-decoration-none" %>
-              </td>
-              <td>
-                R$ <%= number_to_currency(revenue.value, unit: "", separator: ",", delimiter: ".") %>
-              </td>
-              <td>
-                <%= revenue.animal_production.property.name %>
-              </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
+  <div class="mb-5 bg-white rounded-5 shadow-sm p-4">
+    <% @transactions.each do |t| %>
+      <% record = t["record"] %>
+      <% is_revenue = t["type"] == "Receita" %>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center">
+          <div class="<%= is_revenue ? 'bg-success' : 'bg-danger' %> text-white rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;">
+            <i class="bi <%= is_revenue ? 'bi-cash-stack' : 'bi-cart-dash' %> fs-5"></i>
+          </div>
+          <div>
+            <div><strong><%= record.description %></strong></div>
+            <small class="text-muted"><%= record.created_at.strftime("%H:%M – %d %B") %></small>
+          </div>
+        </div>
+        <div class="text-end">
+          <small><%= record.animal_production&.property&.name || "Sem propriedade" %></small>
+          <div class="<%= is_revenue ? 'text-success' : 'text-danger' %> fw-bold">
+            <%= is_revenue ? "R$" : "-R$" %> <%= number_to_currency(record.value, unit: "", separator: ",", delimiter: ".") %>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="tab-pane fade" id="expenses" role="tabpanel" aria-labelledby="expenses-tab">
-      <div class="table-responsive">
-        <table class="table table-borderless">
-          <thead>
-          <tr class="border-bottom">
-            <th>Descrição</th>
-            <th>Valor</th>
-            <th>Propriedade</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @expenses.each do |expense| %>
-            <tr class="border-bottom">
-              <td>
-                <%= link_to expense.description, admin_expense_path(expense), class: "text-decoration-none" %>
-              </td>
-              <td>
-                R$ <%= number_to_currency(expense.value, unit: "", separator: ",", delimiter: ".") %>
-              </td>
-              <td>
-                <%= expense.animal_production.property.name %>
-              </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <% end %>
   </div>
+
 </div>
